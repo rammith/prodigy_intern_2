@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0d0c0c;
+            margin: 0;
+            padding: 0;
+        }
+
+        #form-container {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 25px;
+            background-color: #44e8ee;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            color: #121314;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .radio-label {
+            font-weight: normal;
+            margin-right: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .buttons button {
+            flex: 1 1 45%; /* Each button takes up to 45% of the container width */
+            background-color: #007BFF;
+            color: white;
+            padding: 12px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .buttons button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="form-container">
+        <h1>Employee Management</h1>
+        <form id="form" method="get">
+            <label for="username">Employee Name:</label>
+            <input type="text" id="username" name="username" placeholder="Enter Employee Name">
+            
+            <label for="id">Employee ID:</label>
+            <input type="text" id="id" name="id" placeholder="Enter Employee ID">
+            
+            <label for="branch">Branch:</label>
+            <select id="branch" name="branch">
+                <option value="select">Select a Branch</option>
+                <option value="Headquarters">Headquarters</option>
+                <option value="Development">Development</option>
+                <option value="Quality Assurance">Quality Assurance</option>
+                <option value="Customer Support">Customer Support</option>
+                <option value="Sales">Sales</option>
+            </select>
+            
+            <label>Gender:</label>
+            <input type="radio" id="male" name="gender" value="Male">
+            <label for="male" class="radio-label">Male</label>
+            <input type="radio" id="female" name="gender" value="Female">
+            <label for="female" class="radio-label">Female</label><br><br>
+
+            <label for="phno">Mobile Number:</label>
+            <input type="text" id="phno" name="phno" placeholder="Enter 10-digit Mobile Number">
+            
+            <label for="branchadd">Branch Address:</label>
+            <input type="text" id="branchadd" name="branchadd" placeholder="Enter Branch Address">
+            
+            <div class="buttons">
+                <button type="submit" onclick="validateForm(event, '/insert')">Insert</button>
+                <button type="submit" onclick="validateForm(event, '/delete')">Delete</button>
+                <button type="submit" onclick="validateForm(event, '/update')">Update</button>
+                <button type="submit" onclick="validateForm(event, '/report')">Report</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validateForm(event, path) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const id = document.getElementById('id').value.trim();
+            const branch = document.getElementById('branch').value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const phno = document.getElementById('phno').value.trim();
+            const branchadd = document.getElementById('branchadd').value.trim();
+
+            if (!username) {
+                alert('Please enter the employee name.');
+                return;
+            }
+
+            if (!id) {
+                alert('Please enter the employee ID.');
+                return;
+            }
+
+            if (branch === 'select') {
+                alert('Please select a branch.');
+                return;
+            }
+
+            if (!gender) {
+                alert('Please select a gender.');
+                return;
+            }
+
+            if (!phno || !/^\d{10}$/.test(phno)) {
+                alert('Please enter a valid 10-digit mobile number.');
+                return;
+            }
+
+            if (!branchadd) {
+                alert('Please enter the branch address.');
+                return;
+            }
+
+            document.getElementById('form').action = 'http://localhost:7050' + path;
+
+            if (path === '/report') {
+                window.location.href = 'http://localhost:7050/report';
+            } else {
+                document.getElementById('form').submit();
+            }
+        }
+    </script>
+</body>
+</html>
